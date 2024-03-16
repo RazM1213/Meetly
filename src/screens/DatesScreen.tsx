@@ -10,7 +10,7 @@ export function DatesScreen({ navigation }: any) {
     return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <Text
-                onPress={() => navigation.navigate('Dates')}
+                onPress={() => navigation.navigate('Pools')}
                 style={{ fontSize: 26, fontWeight: 'bold' }}>Hello {user.FirstName}</Text>
         </View>
     )
