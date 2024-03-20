@@ -12,18 +12,19 @@ import { Pool } from '../core/types'
 export function EditPoolScreen({ navigation }: any) {
     const route = useRoute()
     const poolId = (route.params as { id: string | "" })?.id;
-    const { pools } = usePools()
-    const [pool, setPool] = useRecoilState(tempPool)
+    const { poolList, addPool, removePool } = usePools()
+    const [pool, setPool] = useRecoilState<Pool>(tempPool)
 
     useEffect(() => {
-        const foundPool = pools.find((pool) => pool.id === poolId)
+        const foundPool = poolList.find((pool) => pool.id === poolId)
         console.log("!!!!!!!!!!!")
         if (foundPool) {
             setPool(foundPool)
         } else {
             console.log("New pool!", poolId)
-            const newPool : Pool = {
-                id: poolId, creationDate: Math.floor(Date.now() / 1000),
+            const newPool: Pool = {
+                id: poolId,
+                creationDate: Math.floor(Date.now() / 1000),
                 name: '',
                 selectedContacts: [],
                 mutualFriends: false,
@@ -36,7 +37,7 @@ export function EditPoolScreen({ navigation }: any) {
             }
             setPool(newPool)
         }
-    }, [pools])
+    }, [])
 
     useEffect(() => {
         console.log(pool)
@@ -47,9 +48,9 @@ export function EditPoolScreen({ navigation }: any) {
     }
 
     const savePool = () => {
-        // Implement logic to save the pool with contacts
         console.log('Saving pool with contacts:', pool.selectedContacts)
-        insertPool(pool)
+        addPool(pool)
+        navigation.navigate('PoolsScreen');
     }
 
     return (
@@ -61,10 +62,6 @@ export function EditPoolScreen({ navigation }: any) {
                 style={styles.input}
             />
 
-            <Button mode="contained" onPress={addContacts} style={styles.button}>
-                Select Contacts
-            </Button>
-
             <View style={styles.toggleContainer}>
                 <Text>Mutual Friends</Text>
                 <Switch
@@ -73,11 +70,15 @@ export function EditPoolScreen({ navigation }: any) {
                 />
             </View>
 
+            <Button mode="contained" onPress={addContacts} style={styles.button}>
+                Select Contacts
+            </Button>
+
             <View style={styles.chipContainer}>
                 {pool.selectedContacts?.map((contact) => (
                     <Chip
                         key={contact.id}
-                        onClose={() => alert(pool.selectedContacts.filter((c) => c.id !== contact.id))}
+                    // onClose={() => setcontacts(pool.selectedContacts.filter((c) => c.id !== contact.id))}
                     >
                         {contact.name}
                     </Chip>
@@ -93,10 +94,11 @@ export function EditPoolScreen({ navigation }: any) {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flexGrow: 1,
         padding: 16,
     },
     input: {
+        marginTop: 48,
         marginBottom: 16,
     },
     button: {

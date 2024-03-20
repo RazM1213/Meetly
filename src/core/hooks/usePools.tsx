@@ -1,23 +1,38 @@
 import { useEffect, useState } from 'react';
-import { getPools } from '../../utils/storage';
+import { getPools, insertPool, removePool } from '../../utils/storage';
 import { Pool } from '../types';
+import { poolListState } from '../recoil/atoms/pools';
+import { useRecoilState } from 'recoil';
 
 export function usePools() {
-  const [pools, setPools] = useState<Pool[]>([]);
+  const [poolList, setPoolList] = useRecoilState<Pool[]>(poolListState);
 
-  const fetchPools = async () => {
+  const fetchPoolsAndUpdateState = async () => {
     try {
       const fetchedPools = await getPools();
       console.log("Pools loaded", fetchedPools);
-      setPools(fetchedPools);
+      setPoolList(fetchedPools);
     } catch (error) {
       console.error('Error fetching pools:', error);
     }
   };
 
   useEffect(() => {
-    fetchPools();
+    fetchPoolsAndUpdateState();
   }, []);
 
-  return { pools };
+  const handleAddPool = async (pool : Pool) => {
+    await insertPool(pool);
+    setPoolList(await getPools());
+  };
+
+  const handleRemovePool = (pool: Pool) => {
+    removePool(pool);
+  };
+
+  return {
+    poolList,
+    addPool: handleAddPool,
+    removePool: handleRemovePool,
+  };
 }

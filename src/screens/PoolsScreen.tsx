@@ -6,7 +6,7 @@ import { usePools } from '../core/hooks/usePools'
 export function PoolsScreen({ navigation }: any)  {
   const theme = useTheme()
   const [isExtended, setIsExtended] = useState(true)
-  const { pools } = usePools()
+  const { poolList } = usePools()
   const onScroll = ({ nativeEvent }: { nativeEvent: any }) => {
     const currentScrollPosition = Math.floor(nativeEvent?.contentOffset?.y) ?? 0;
 
@@ -28,9 +28,9 @@ export function PoolsScreen({ navigation }: any)  {
           Create, Edit, and Remove Pools of Friends You'd Love to Hang Out With!
         </Text>
         <View style={styles.cardContainer}>
-          {pools.map((item, index) => (
+          {poolList.map((item, index) => (
             <Card
-              key={index}
+              key={item.id}
               style={styles.card}
               onPress={() => navigation.navigate('EditPoolScreen', { id: item.id })}
             >
@@ -48,7 +48,7 @@ export function PoolsScreen({ navigation }: any)  {
         icon={'plus'}
         label={'Add Pool'}
         extended={isExtended}
-        onPress={() => {console.log("asdfdsaf");navigation.navigate('EditPoolScreen', { id: generateUniqueId() })}}
+        onPress={() => {navigation.navigate('EditPoolScreen', { id: generateUniqueId() })}}
         visible={true}
         animateFrom={'right'}
         iconMode={'dynamic'}
