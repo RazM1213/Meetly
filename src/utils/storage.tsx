@@ -44,7 +44,7 @@ const insertPool = async (pool: Pool) => {
 const removePool = async (pool: Pool) => {
   try {
     let pools = JSON.parse((await AsyncStorage.getItem('pools')) || '[]');
-    pools = pools.filter((pool: Pool) => pool.id !== pool.id);
+    pools = pools.filter((p: Pool) => p.id !== pool.id);
     await AsyncStorage.setItem('pools', JSON.stringify(pools));
   } catch (error) {
     console.error('Error removing pool from storage:', error);

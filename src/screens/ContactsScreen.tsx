@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useRecoilState } from 'recoil';
 import { View, FlatList, StyleSheet } from 'react-native';
 import { Text, Searchbar, Card, Avatar, IconButton, Chip, FAB } from 'react-native-paper';
@@ -6,6 +6,29 @@ import { useContacts } from '../core/hooks/useContacts';
 import { tempPool } from '../core/recoil/atoms/tempPool';
 import { Contact } from 'expo-contacts';
 import { Pool } from '../core/types';
+
+
+interface ContactItemProps {
+    item: Contact;
+    onSelect: (contact: Contact) => void;
+    isSelected: boolean; // Add this flag to indicate selection
+}
+
+const ContactItem: React.FC<ContactItemProps> = React.memo(({ item, onSelect, isSelected }) => (
+    <Card.Title
+        title={item.name}
+        subtitle={item.phoneNumbers?.[0]?.number ?? 'No number'}
+        left={(props) => <Avatar.Icon {...props} icon="folder" />}
+        right={(props) => (
+            <IconButton
+                {...props}
+                icon={isSelected ? 'check' : 'plus'}
+                onPress={() => { onSelect(item) }}
+            />
+        )}
+    />
+));
+
 
 export function ContactsScreen({ navigation }: any) {
     const [searchQuery, setSearchQuery] = useState('');
@@ -17,16 +40,21 @@ export function ContactsScreen({ navigation }: any) {
         setSelectedContacts(pool.selectedContacts);
     }, [])
 
-    const isContactSelected = (contact: Contact) => selectedContacts.some((c) => c.id === contact.id);
+    const isContactSelected = useCallback((contact: Contact) => {
+        return selectedContacts.some((c) => c.id === contact.id);
+    }, [selectedContacts]);
 
-    const handleContactSelection = (contact: Contact) => {
+    const handleContactSelection = useCallback((contact: Contact) => {
         if (!isContactSelected(contact)) {
             setSelectedContacts([...selectedContacts, contact]);
+        } else {
+            handleContactRemoval(contact)
         }
-    };
+    }, [selectedContacts]);
 
-    const handleContactRemoval = (index: number) => {
-        setSelectedContacts(selectedContacts.filter((_, i) => i !== index));
+
+    const handleContactRemoval = (contact: Contact) => {
+        setSelectedContacts(selectedContacts.filter((c) => c.id !== contact.id));
     };
 
     const saveContacts = () => {
@@ -34,27 +62,21 @@ export function ContactsScreen({ navigation }: any) {
         navigation.navigate('EditPoolScreen', { selectedContacts });
     };
 
-    const renderItem = ({ item }: { item: Contact }) => (
-        <Card.Title
-            title={item.name}
-            subtitle={item.phoneNumbers?.[0]?.number ?? 'no number'}
-            left={(props) => <Avatar.Icon {...props} icon="folder" />}
-            right={(props) => (
-                <IconButton
-                    {...props}
-                    icon={isContactSelected(item) ? 'check' : 'plus'}
-                    onPress={() => handleContactSelection(item)}
-                />
-            )}
+    const renderItem = useCallback(({ item }: { item: Contact }) => (
+        <ContactItem
+            item={item}
+            onSelect={handleContactSelection}
+            isSelected={isContactSelected(item)} 
         />
-    );
+    ), [handleContactSelection]);
+
 
     const renderSelectedContacts = () => (
         <View style={styles.chipContainer}>
             {selectedContacts.map((contact, index) => (
                 <Chip
                     key={index}
-                    onClose={() => handleContactRemoval(index)}
+                    onClose={() => handleContactRemoval(contact)}
                     style={styles.chip}
                 >
                     {contact.name}
@@ -92,14 +114,14 @@ export function ContactsScreen({ navigation }: any) {
 };
 
 const styles = StyleSheet.create({
-    searchbar:{
+    searchbar: {
         marginTop: 40
     },
     chipContainer: {
         flexDirection: 'row',
         flexWrap: 'wrap',
         margin: 10,
-        marginRight:30
+        marginRight: 30
     },
     chip: {
         margin: 4,

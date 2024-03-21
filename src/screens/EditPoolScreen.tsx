@@ -17,7 +17,6 @@ export function EditPoolScreen({ navigation }: any) {
 
     useEffect(() => {
         const foundPool = poolList.find((pool) => pool.id === poolId)
-        console.log("!!!!!!!!!!!")
         if (foundPool) {
             setPool(foundPool)
         } else {
@@ -47,8 +46,12 @@ export function EditPoolScreen({ navigation }: any) {
         navigation.navigate('ContactsScreen')
     }
 
+    const deletePool = () => {
+        removePool(pool);
+        navigation.navigate('PoolsScreen');
+    }
+
     const savePool = () => {
-        console.log('Saving pool with contacts:', pool.selectedContacts)
         addPool(pool)
         navigation.navigate('PoolsScreen');
     }
@@ -74,6 +77,7 @@ export function EditPoolScreen({ navigation }: any) {
                 Select Contacts
             </Button>
 
+
             <View style={styles.chipContainer}>
                 {pool.selectedContacts?.map((contact) => (
                     <Chip
@@ -87,6 +91,9 @@ export function EditPoolScreen({ navigation }: any) {
 
             <Button mode="contained" onPress={savePool} disabled={pool.selectedContacts?.length === 0}>
                 Save Pool
+            </Button>
+            <Button mode="outlined" onPress={deletePool}>
+                Delete Pool
             </Button>
         </View>
     )

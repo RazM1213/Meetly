@@ -26,8 +26,9 @@ export function usePools() {
     setPoolList(await getPools());
   };
 
-  const handleRemovePool = (pool: Pool) => {
-    removePool(pool);
+  const handleRemovePool = async (pool: Pool) => {
+    await removePool(pool);
+    setPoolList(await getPools());
   };
 
   return {
