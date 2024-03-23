@@ -1,21 +1,38 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { MD3LightTheme as DefaultTheme, MD3LightTheme, PaperProvider } from 'react-native-paper'
+
 import { RecoilRoot } from 'recoil';
-import TabNavigator from './src/navigators/TabNavigator';
+import { useEffect, useState } from 'react';
+import { initStorage } from './src/utils/storage';
+import { getContactsPermissionsState } from './src/utils/permissions';
+import { mainTheme, darkTheme } from './src/theme/theme';
+import HomeTabNavigator from './src/navigators/HomeTabNavigator';
+
 
 const Stack = createNativeStackNavigator();
 
+
+
 export default function App() {
+  const [hasPermission, setHasPermission] = useState<boolean | null>(true);
+
+  useEffect(() => {
+    const checkContactsPermission = async () => {
+      setHasPermission(await getContactsPermissionsState())
+    };
+    checkContactsPermission();
+    initStorage()
+  }, [])
+
+
   return (
     <RecoilRoot>
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen
-            name="Tab"
-            component={TabNavigator}
-            options={{ animation: "slide_from_bottom" }}></Stack.Screen>
-        </Stack.Navigator>
-      </NavigationContainer>
+      <PaperProvider theme={mainTheme}>
+        <NavigationContainer theme={mainTheme} >
+          <HomeTabNavigator />
+        </NavigationContainer>
+      </PaperProvider>
     </RecoilRoot>
   )
 }
