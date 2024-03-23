@@ -1,12 +1,41 @@
 import React, { useState, useEffect } from 'react'
 import { useRecoilState } from 'recoil'
 import { View, StyleSheet } from 'react-native'
-import { TextInput, Button, Switch, Text, Chip, Surface, Icon } from 'react-native-paper'
+import { TextInput, Button, Switch, Text, Chip, Surface } from 'react-native-paper'
 import { useRoute } from '@react-navigation/native'
 import { tempPool } from '../core/recoil/atoms/tempPool'
 import { usePools } from '../core/hooks/usePools'
 import { Pool } from '../core/types'
 import { Contact } from 'expo-contacts'
+import MapView, { Marker } from 'react-native-maps'
+
+
+const ChooseLocationComponent = () => {
+    const [location, setLocation] = useState({ latitude: 32.0840, longitude: 34.8878 });
+
+    const handleLocationChange = (lat: number, lng: number) => {
+        setLocation({ latitude: lat, longitude: lng });
+    };
+
+    return (
+        <View>
+            <MapView
+                style={{ height: 200 }}
+                region={{
+                    latitude: location.latitude,
+                    longitude: location.longitude,
+                    latitudeDelta: 0.0922,
+                    longitudeDelta: 0.0421,
+                }}
+                onPress={(e) => handleLocationChange(e.nativeEvent.coordinate.latitude, e.nativeEvent.coordinate.longitude)}
+            >
+                <Marker coordinate={{ latitude: location.latitude, longitude: location.longitude }} />
+            </MapView>
+        </View>
+    );
+};
+
+// export default ChooseLocationComponent;
 
 
 export function EditPoolScreen({ navigation }: any) {
@@ -83,6 +112,12 @@ export function EditPoolScreen({ navigation }: any) {
                     />
                 </Surface>
             </View>
+            <Surface style={{
+                borderWidth: 1,
+            }} >
+                <ChooseLocationComponent />
+            </Surface>
+
 
 
             <View style={styles.headerContainer}>
@@ -98,13 +133,13 @@ export function EditPoolScreen({ navigation }: any) {
             <View style={styles.chipContainer}>
                 {pool.selectedContacts && pool.selectedContacts.length > 0 ? (
                     pool.selectedContacts.map((contact, index) => (
-                        <View key={contact.id} style={styles.chipWrapper}>
-                            <Chip
+                        <View key={contact.id} >
+                            <Chip mode='flat'
+                                style={styles.chip}
                                 onClose={() => handleContactRemoval(contact)}
                             >
                                 {contact.name}
                             </Chip>
-                            {index < pool.selectedContacts.length - 1 && <View style={styles.chipSpacer} />}
                         </View>
                     ))
                 ) : (
@@ -159,13 +194,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         alignItems: 'center',
+        padding: 8,
     },
-    chipWrapper: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    chipSpacer: {
-        width: 8, // Adjust the width as needed
+    chip: {
+        margin: 3
     },
     headerContainer: {
         flexDirection: 'row',

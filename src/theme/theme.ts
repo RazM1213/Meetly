@@ -1,4 +1,76 @@
-// TODO: Change theme according to our styling - this is just a nice template.
+import {
+  DarkTheme as NavigationDarkTheme,
+  DefaultTheme as NavigationDefaultTheme,
+} from '@react-navigation/native';
+import {
+  MD3DarkTheme,
+  MD3LightTheme,
+  adaptNavigationTheme,
+} from 'react-native-paper';
+import merge from 'deepmerge';
+
+
+const { LightTheme, DarkTheme } = adaptNavigationTheme({
+  reactNavigationLight: NavigationDefaultTheme,
+  reactNavigationDark: NavigationDarkTheme,
+});
+
+
+// Use https://m3.material.io/theme-builder#/custom to generate the theme 
+
+const warmTheme = {
+  ...MD3LightTheme,
+  colors: {
+    ...MD3LightTheme.colors,
+    primary: '#99461E',
+    onPrimary: '#FFFFFF',
+    primaryContainer: '#FFDBCD',
+    onPrimaryContainer: '#360F00',
+    secondary: '#77574B',
+    onSecondary: '#FFFFFF',
+    secondaryContainer: '#FFDBCD',
+    onSecondaryContainer: '#2C160C',
+    tertiary: '#675F30',
+    onTertiary: '#FFFFFF',
+    tertiaryContainer: '#F0E3A8',
+    onTertiaryContainer: '#211C00',
+    error: '#BA1A1A',
+    errorContainer: '#FFDAD6',
+    onError: '#FFFFFF',
+    onErrorContainer: '#410002',
+    background: '#FFFBFF',
+    onBackground: '#201A18',
+    surface: '#FFFBFF',
+    onSurface: '#201A18',
+    surfaceVariant: '#F5DED6',
+    onSurfaceVariant: '#53433E',
+    outline: '#85736D',
+    inverseOnSurface: '#FBEEEA',
+    inverseSurface: '#362F2C',
+    inversePrimary: '#FFB597',
+    shadow: '#000000',
+    surfaceTint: '#99461E',
+    outlineVariant: '#D8C2BA',
+    scrim: '#000000',
+    backdrop: '#BDBDBD',
+    elevation: { 
+      level0: 'transparent',
+      level1: '#F5ECE3',
+      level2: '#EED9C7',
+      level3: '#E6C5AB',
+      level4: '#DEB18F',
+      level5: '#D69D73',
+    },
+  },
+};
+
+
+export const mainTheme = merge(LightTheme, warmTheme);
+export const darkTheme = merge(MD3DarkTheme, DarkTheme);
+
+
+
+
 
 interface Spacing {
   space_2: number;

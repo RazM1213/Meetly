@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react'
 import { ScrollView, View, StyleSheet, SafeAreaView } from 'react-native'
-import { Card, useTheme, Text, Title, Paragraph, AnimatedFAB } from 'react-native-paper'
+import { Card, Text, Title, Paragraph, AnimatedFAB } from 'react-native-paper'
 import { usePools } from '../core/hooks/usePools'
+import { mainTheme } from '../theme/theme'
+import { FloatingSettingsButton } from '../components/FloatingTooltip'
 
-export function PoolsScreen({ navigation }: any)  {
-  const theme = useTheme()
+
+
+export function PoolsScreen({ navigation }: any) {
   const [isExtended, setIsExtended] = useState(true)
   const { poolList } = usePools()
   const onScroll = ({ nativeEvent }: { nativeEvent: any }) => {
@@ -21,6 +24,7 @@ export function PoolsScreen({ navigation }: any)  {
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.scrollView} onScroll={onScroll}>
+        <FloatingSettingsButton />
         <Text style={styles.title} variant="headlineLarge">
           Pools Of Friends
         </Text>
@@ -30,9 +34,12 @@ export function PoolsScreen({ navigation }: any)  {
         <View style={styles.cardContainer}>
           {poolList.map((item, index) => (
             <Card
-              key={item.id}
+              key={index}
               style={styles.card}
               onPress={() => navigation.navigate('EditPoolScreen', { id: item.id })}
+              theme={
+                mainTheme
+              }
             >
               <Card.Content>
                 <Title>{item.name}</Title>
@@ -48,7 +55,7 @@ export function PoolsScreen({ navigation }: any)  {
         icon={'plus'}
         label={'Add Pool'}
         extended={isExtended}
-        onPress={() => {navigation.navigate('EditPoolScreen', { id: generateUniqueId() })}}
+        onPress={() => { navigation.navigate('EditPoolScreen', { id: generateUniqueId() }) }}
         visible={true}
         animateFrom={'right'}
         iconMode={'dynamic'}
@@ -73,7 +80,7 @@ const styles = StyleSheet.create({
   },
   card: {
     width: '48%',
-    marginBottom: 16,
+    marginBottom: 16
   },
   addCard: {
     marginBottom: 16,
@@ -81,7 +88,7 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   title: {
-    paddingTop: 40,
+    paddingTop: 30,
   },
   subTitle: {
     paddingBottom: 20,

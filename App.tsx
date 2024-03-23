@@ -1,15 +1,18 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { MD3LightTheme as DefaultTheme, PaperProvider } from 'react-native-paper'
+import { MD3LightTheme as DefaultTheme, MD3LightTheme, PaperProvider } from 'react-native-paper'
+
 import { RecoilRoot } from 'recoil';
 import { useEffect, useState } from 'react';
 import { initStorage } from './src/utils/storage';
 import { getContactsPermissionsState } from './src/utils/permissions';
-import PoolsNavigator from './src/navigators/PoolsNavigator';
+import { mainTheme, darkTheme } from './src/theme/theme';
 import HomeTabNavigator from './src/navigators/HomeTabNavigator';
 
 
 const Stack = createNativeStackNavigator();
+
+
 
 export default function App() {
   const [hasPermission, setHasPermission] = useState<boolean | null>(true);
@@ -25,8 +28,8 @@ export default function App() {
 
   return (
     <RecoilRoot>
-      <PaperProvider>
-        <NavigationContainer>
+      <PaperProvider theme={mainTheme}>
+        <NavigationContainer theme={mainTheme} >
           <HomeTabNavigator />
         </NavigationContainer>
       </PaperProvider>

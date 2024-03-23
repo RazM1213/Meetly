@@ -1,21 +1,36 @@
 import { StyleSheet } from 'react-native';
 import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navigation'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import { DatesScreen, EditPoolScreen, PoolsScreen } from '../screens';
+import { DatesScreen } from '../screens';
 import { COLORS } from '../theme/theme';
 import PoolsNavigator from './PoolsNavigator';
+import { useTheme } from 'react-native-paper';
+import MatchesScreen from '../screens/MatchesScreen';
 
 const Tab = createMaterialBottomTabNavigator();
 
 const HomeTabNavigator = () => {
     return (
-        <Tab.Navigator>
+        <Tab.Navigator 
+            // barStyle={styles.tabBarStyle}
+            shifting={false}
+        >
             <Tab.Screen
                 name="Dates"
                 component={DatesScreen}
                 options={{
                     tabBarIcon: ({ color }) => (
                         <MaterialCommunityIcons name="calendar-check" color={color} size={24} />
+                    ),
+                }}
+            />
+            <Tab.Screen
+                name="Matches"
+                component={MatchesScreen}
+                options={{
+                    tabBarBadge:2,
+                    tabBarIcon: ({ color }) => (
+                        <MaterialCommunityIcons name="handshake" color={color} size={26} />
                     ),
                 }}
             />
@@ -34,12 +49,10 @@ const HomeTabNavigator = () => {
 
 const styles = StyleSheet.create({
     tabBarStyle: {
-        height: 80,
-        position: 'absolute',
-        backgroundColor: COLORS.primaryBlackRGBA,
-        borderTopWidth: 0,
-        elevation: 0,
-        borderTopColor: 'transparent',
+        backgroundColor: COLORS.primaryOrangeHex,
+    },
+    active: {
+        // backgroundColor: COLORS.primaryWhiteHex
     },
     BlurViewStyles: {
         position: 'absolute',

@@ -18,7 +18,7 @@ const ContactItem: React.FC<ContactItemProps> = React.memo(({ item, onSelect, is
     <Card.Title
         title={item.name}
         subtitle={item.phoneNumbers?.[0]?.number ?? 'No number'}
-        left={(props) => <Avatar.Icon {...props} icon="folder" />}
+        left={(props) => <Avatar.Icon {...props}  icon="folder" />}
         right={(props) => (
             <IconButton
                 {...props}
@@ -100,7 +100,6 @@ export function ContactsScreen({ navigation }: any) {
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id?.toString() ?? ''}
                 ListEmptyComponent={<Text>No contacts found</Text>}
-                ListHeaderComponent={<Text style={{ padding: 10 }}>Contacts:</Text>}
             />
             {selectedContacts.length > 0 && renderSelectedContacts()}
             <FAB
@@ -115,7 +114,7 @@ export function ContactsScreen({ navigation }: any) {
 
 const styles = StyleSheet.create({
     searchbar: {
-        marginTop: 40
+        marginTop: 30
     },
     chipContainer: {
         flexDirection: 'row',
