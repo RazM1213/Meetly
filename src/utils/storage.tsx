@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Contacts from 'expo-contacts';
-import { Pool } from '../core/types';
+import { Pool, User } from '../core/types';
 
 
 const initStorage = async () => {
@@ -73,4 +73,69 @@ const getContacts = async (): Promise<Contacts.Contact[]> => {
   }
 };
 
-export { initStorage, insertPool, getPools, getContacts, removePool };
+
+
+const getUser = async (): Promise<User> => {
+  try {
+    const user = await AsyncStorage.getItem('user');
+    return user ? JSON.parse(user) : null;
+  } catch (error) {
+    console.error('Error selecting user:', error);
+    throw error;
+  }
+};
+
+
+const setUser = async (user: User) => {
+  try {
+    await AsyncStorage.setItem('user', JSON.stringify(user));
+  } catch (error) {
+    console.error('Error setting user:', error);
+    throw error;
+  }
+}
+
+
+const getSavedLocations = async (): Promise<Location[]> => {
+  try {
+    const locations = await AsyncStorage.getItem('savedLocations');
+    return locations ? JSON.parse(locations) : [];
+  } catch (error) {
+    console.error('Error selecting saved locations:', error);
+    throw error;
+  }
+};
+
+const insertSavedLocation = async (location: Location) => {
+  try {
+    const savedLocations = await getSavedLocations();
+    savedLocations.push(location);
+    await AsyncStorage.setItem('savedLocations', JSON.stringify(savedLocations));
+  } catch (error) {
+    console.error('Error inserting saved location:', error);
+    throw error;
+  }
+}
+
+
+const removeSavedLocation = async (location: Location) => {
+  try {
+    const savedLocations = await getSavedLocations();
+    savedLocations.splice(savedLocations.indexOf(location), 1);
+    await AsyncStorage.setItem('savedLocations', JSON.stringify(savedLocations));
+  } catch (error) {
+    console.error('Error removing saved location:', error);
+    throw error;
+  }
+};
+
+
+
+const flushStorage = async () => {
+  AsyncStorage.getAllKeys()
+    .then(keys => AsyncStorage.multiRemove(keys))
+    .then(() => alert('success'));
+}
+
+
+export { initStorage, insertPool, getPools, getContacts, removePool, getUser, setUser, flushStorage, getSavedLocations, insertSavedLocation, removeSavedLocation };

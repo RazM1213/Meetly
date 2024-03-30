@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { IconButton, Tooltip } from 'react-native-paper';
+import { flushStorage } from '../utils/storage';
 
 
 
@@ -18,6 +19,7 @@ export const FloatingSettingsButton: React.FC = () => {
         <IconButton
           icon="cog"
           size={24}
+          onPress={() => flushStorage()}
         />
       </Tooltip>
     </View>

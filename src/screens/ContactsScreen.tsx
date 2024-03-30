@@ -18,7 +18,7 @@ const ContactItem: React.FC<ContactItemProps> = React.memo(({ item, onSelect, is
     <Card.Title
         title={item.name}
         subtitle={item.phoneNumbers?.[0]?.number ?? 'No number'}
-        left={(props) => <Avatar.Icon {...props}  icon="folder" />}
+        left={(props) => <Avatar.Icon {...props} icon="folder" />}
         right={(props) => (
             <IconButton
                 {...props}
@@ -66,7 +66,7 @@ export function ContactsScreen({ navigation }: any) {
         <ContactItem
             item={item}
             onSelect={handleContactSelection}
-            isSelected={isContactSelected(item)} 
+            isSelected={isContactSelected(item)}
         />
     ), [handleContactSelection]);
 
@@ -95,7 +95,7 @@ export function ContactsScreen({ navigation }: any) {
             />
             <FlatList
                 data={contacts.filter((contact) =>
-                    contact.name.toLowerCase().includes(searchQuery.toLowerCase()),
+                    contact.name?.toLowerCase().includes(searchQuery.toLowerCase()),
                 )}
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id?.toString() ?? ''}

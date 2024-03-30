@@ -1,5 +1,5 @@
 import { Contact } from "expo-contacts";
-import { LocationAndRange } from "./LocationAndRange";
+import { SavedLocation } from "./Location";
 
 export type Pool = {
     id: string;
@@ -8,5 +8,5 @@ export type Pool = {
     selectedContacts: Contact[];
     mutualFriends: boolean;
     active: boolean;
-    location: LocationAndRange;
+    location: SavedLocation;
 };

@@ -1,10 +1,7 @@
-import { StyleSheet } from 'react-native';
 import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navigation'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { DatesScreen } from '../screens';
-import { COLORS } from '../theme/theme';
 import PoolsNavigator from './PoolsNavigator';
-import { useTheme } from 'react-native-paper';
 import MatchesScreen from '../screens/MatchesScreen';
 
 const Tab = createMaterialBottomTabNavigator();
@@ -12,7 +9,6 @@ const Tab = createMaterialBottomTabNavigator();
 const HomeTabNavigator = () => {
     return (
         <Tab.Navigator 
-            // barStyle={styles.tabBarStyle}
             shifting={false}
         >
             <Tab.Screen
@@ -47,20 +43,5 @@ const HomeTabNavigator = () => {
     );
 };
 
-const styles = StyleSheet.create({
-    tabBarStyle: {
-        backgroundColor: COLORS.primaryOrangeHex,
-    },
-    active: {
-        // backgroundColor: COLORS.primaryWhiteHex
-    },
-    BlurViewStyles: {
-        position: 'absolute',
-        top: 0,
-        bottom: 0,
-        left: 0,
-        right: 0,
-    },
-});
 
 export default HomeTabNavigator;

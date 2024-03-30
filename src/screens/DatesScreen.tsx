@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
         padding: 20,
     },
     title: {
-        paddingTop: 40,
+        paddingTop: 30,
     },
     subTitle: {
         paddingBottom: 20,

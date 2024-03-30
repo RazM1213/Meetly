@@ -1,0 +1,69 @@
+// import React, { useState } from 'react';
+// import { StyleSheet } from 'react-native';
+// import { Surface, Text, Title } from 'react-native-paper';
+// import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+
+// export default function LocationSelectScreen({ navigation }) {
+//     const [location, setLocation] = useState({ latitude: 32.0840, longitude: 34.8878 });
+
+//     const handleLocationChange = (lat: number, lng: number) => {
+//         setLocation({ latitude: lat, longitude: lng });
+//     };
+
+//     const handleSubmit = () => {
+//         navigation.navigate('Dates', {
+//             location: {
+//                 latitude: location.latitude,
+//                 longitude: location.longitude,
+//                 range: 20,
+//             }
+//         });
+//     };
+
+//     return (
+//         <Surface style={styles.container}>
+//             <Title>Choose location</Title>
+//             <MapView
+//                 provider={PROVIDER_GOOGLE}
+//                 style={styles.map}
+//                 region={{
+//                     latitude: location.latitude,
+//                     longitude: location.longitude,
+//                     latitudeDelta: 0.0922,
+//                     longitudeDelta: 0.0421,
+//                 }}
+//                 onPress={(e) => handleLocationChange(e.nativeEvent.coordinate.latitude, e.nativeEvent.coordinate.longitude)}
+//             >
+//                 <Marker coordinate={location} />
+//             </MapView>
+//             <Text>
+//                 <Text style={{ color: 'white' }}>Pick a location on the map and press </Text>
+//                 <Text style={{ color: 'white', fontWeight: 'bold' }}>Submit</Text>
+//             </Text>
+//             <Text
+//                 onPress={handleSubmit}
+//                 style={{ color: 'white', textDecorationLine: 'underline' }}
+//             >
+//                 Submit
+//             </Text>
+//         </Surface>
+//     );
+// }
+
+// const styles = StyleSheet.create({
+//     container: {
+//         flex: 1,
+//         alignItems: 'center',
+//         padding: 20,
+//         backgroundColor: '#776cae',
+//     },
+//     map: {
+//         height: 250,
+//         width: '100%',
+//         borderRadius: 10,
+//     },
+// });
+
+
+
+

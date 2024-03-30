@@ -10,7 +10,6 @@ export function usePools() {
   const fetchPoolsAndUpdateState = async () => {
     try {
       const fetchedPools = await getPools();
-      console.log("Pools loaded", fetchedPools);
       setPoolList(fetchedPools);
     } catch (error) {
       console.error('Error fetching pools:', error);
